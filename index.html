@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สั่งเสื้อกีฬา SMTE — be by your side</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #E8501A;
+    --orange-dark: #C23A0A;
+    --orange-deep: #9E2E06;
+    --orange-light: #FF7A3D;
+    --gold: #FFD65C;
+    --cream: #FFF7F0;
+    --ink: #3A2018;
+    --muted: #9A6A55;
+    --line: #F3DCCE;
+    --ok: #1E9E5A;
+    --err: #D63333;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: 'Prompt', sans-serif;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 68px, rgba(255,255,255,.05) 68px 76px),
+      linear-gradient(160deg, #D9440F 0%, #E8501A 45%, #F06A2E 100%);
+    min-height: 100vh;
+    color: var(--ink);
+    padding: 24px 14px 60px;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+
+  /* ---------- hero ---------- */
+  .hero { text-align: center; color: #fff; padding: 18px 10px 26px; }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px; padding: 6px 18px; font-size: 13px; font-weight: 500;
+    letter-spacing: .06em; backdrop-filter: blur(4px);
+  }
+  .hero .badge .num {
+    background: #fff; color: var(--orange-dark); font-weight: 800;
+    border-radius: 999px; width: 22px; height: 22px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 12px;
+  }
+  .hero h1 {
+    font-size: clamp(30px, 7vw, 44px); font-weight: 800; margin-top: 14px;
+    letter-spacing: .04em; text-shadow: 0 3px 0 rgba(0,0,0,.12);
+  }
+  .hero .script {
+    font-family: 'Great Vibes', cursive; font-size: clamp(24px, 5vw, 32px);
+    color: var(--gold); margin-top: 2px; text-shadow: 0 2px 6px rgba(0,0,0,.15);
+  }
+  .hero p.sub { margin-top: 10px; font-size: 14px; opacity: .92; font-weight: 300; }
+
+  /* ---------- card ---------- */
+  .card {
+    background: var(--cream); border-radius: 22px; overflow: hidden;
+    box-shadow: 0 18px 50px rgba(120, 35, 0, .35);
+  }
+  .card-top { height: 8px; background: linear-gradient(90deg, var(--gold), #fff 50%, var(--gold)); }
+
+  .shirt-strip { background: #fff; padding: 18px 18px 6px; text-align: center; }
+  .shirt-strip img { max-width: 100%; height: auto; border-radius: 12px; }
+  .shirt-strip .cap { font-size: 12.5px; color: var(--muted); padding: 8px 0 12px; }
+
+  section.step { padding: 22px 22px 6px; }
+  .step-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .step-head .no {
+    width: 34px; height: 34px; border-radius: 10px; flex: 0 0 34px;
+    background: linear-gradient(150deg, var(--orange), var(--orange-dark));
+    color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 10px rgba(200,60,10,.35);
+  }
+  .step-head h2 { font-size: 17px; font-weight: 700; }
+  .step-head small { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid .full { grid-column: 1 / -1; }
+  @media (max-width: 430px) { .grid { grid-template-columns: 1fr; } .grid .half-sm { grid-column: auto; } }
+
+  .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .field label .req { color: var(--err); }
+  .field input, .field select {
+    width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid var(--line);
+    background: #fff; font-family: inherit; font-size: 15px; color: var(--ink);
+    outline: none; transition: border-color .15s, box-shadow .15s;
+    appearance: none; -webkit-appearance: none;
+  }
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C23A0A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  .field input:focus, .field select:focus {
+    border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232,80,26,.15);
+  }
+  .field .hint { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+
+  /* size picker */
+  .sizes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  @media (max-width: 430px) { .sizes { grid-template-columns: repeat(3, 1fr); } }
+  .size-opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .size-opt span {
+    display: flex; flex-direction: column; align-items: center; gap: 1px;
+    border: 1.5px solid var(--line); background: #fff; border-radius: 12px;
+    padding: 9px 4px 7px; cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .size-opt b { font-size: 15.5px; font-weight: 700; }
+  .size-opt small { font-size: 10.5px; color: var(--muted); }
+  .size-opt input:checked + span {
+    border-color: var(--orange-dark);
+    background: linear-gradient(150deg, var(--orange), var(--orange-dark));
+    box-shadow: 0 4px 12px rgba(200,60,10,.35);
+  }
+  .size-opt input:checked + span b, .size-opt input:checked + span small { color: #fff; }
+  .size-opt input:focus-visible + span { box-shadow: 0 0 0 3px rgba(232,80,26,.3); }
+
+  /* qty stepper */
+  .qty-row { display: flex; align-items: center; gap: 14px; }
+  .qty-btn {
+    width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid var(--line);
+    background: #fff; font-size: 22px; font-weight: 600; color: var(--orange-dark);
+    cursor: pointer; line-height: 1; transition: all .15s; font-family: inherit;
+  }
+  .qty-btn:active { transform: scale(.94); }
+  .qty-val { font-size: 22px; font-weight: 700; min-width: 46px; text-align: center; }
+  .total-pill {
+    margin-left: auto; background: #fff; border: 1.5px dashed var(--orange);
+    color: var(--orange-dark); border-radius: 12px; padding: 8px 16px;
+    font-weight: 700; font-size: 15px; display: none;
+  }
+  .total-pill.show { display: block; }
+
+  /* payment */
+  .pay-box {
+    background: #fff; border: 1.5px solid var(--line); border-radius: 16px;
+    padding: 18px 16px; text-align: center;
+  }
+  .pay-box img.qr { width: min(260px, 78%); border-radius: 12px; border: 1px solid var(--line); }
+  .pay-box .acc-name { font-weight: 700; font-size: 15.5px; margin-top: 10px; }
+  .pay-box .acc-no { font-size: 13.5px; color: var(--muted); letter-spacing: .05em; }
+  .pay-box .pay-note {
+    margin-top: 10px; font-size: 12px; color: var(--muted);
+    background: var(--cream); border-radius: 10px; padding: 8px 12px; display: inline-block;
+  }
+
+  /* slip upload */
+  .drop {
+    display: block;
+    border: 2px dashed #E9B79A; border-radius: 16px; background: #fff;
+    padding: 26px 16px; text-align: center; cursor: pointer; transition: all .15s;
+  }
+  .drop:hover, .drop.drag { border-color: var(--orange); background: #FFF3EA; }
+  .drop .ico { font-size: 34px; }
+  .drop .t1 { font-weight: 600; font-size: 14.5px; margin-top: 6px; }
+  .drop .t2 { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .drop input { display: none; }
+  .slip-preview { display: none; text-align: center; }
+  .slip-preview img {
+    max-width: min(240px, 70%); border-radius: 14px; border: 3px solid var(--ok);
+    box-shadow: 0 8px 24px rgba(0,0,0,.14);
+  }
+  .slip-preview .ok-line { color: var(--ok); font-weight: 600; font-size: 13.5px; margin-top: 8px; }
+  .slip-preview button {
+    margin-top: 6px; background: none; border: none; color: var(--muted);
+    text-decoration: underline; font-family: inherit; font-size: 12.5px; cursor: pointer;
+  }
+
+  /* submit */
+  .submit-zone { padding: 10px 22px 26px; }
+  .agree { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; margin-bottom: 14px; color: #6B4433; }
+  .agree input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--orange-dark); flex: 0 0 18px; }
+  .btn-submit {
+    width: 100%; padding: 16px; border: none; border-radius: 16px; cursor: pointer;
+    font-family: inherit; font-size: 17.5px; font-weight: 700; color: #fff;
+    background: linear-gradient(150deg, var(--orange), var(--orange-dark) 60%, var(--orange-deep));
+    box-shadow: 0 8px 22px rgba(200,60,10,.45); transition: transform .12s, box-shadow .12s;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .btn-submit:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(200,60,10,.5); }
+  .btn-submit:disabled { opacity: .55; cursor: not-allowed; box-shadow: none; }
+  .spinner {
+    width: 20px; height: 20px; border-radius: 50%; display: none;
+    border: 3px solid rgba(255,255,255,.35); border-top-color: #fff;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .btn-submit.loading .spinner { display: block; }
+
+  .form-error {
+    display: none; background: #FDEBEB; border: 1.5px solid #F3B9B9; color: var(--err);
+    border-radius: 12px; padding: 12px 14px; font-size: 13.5px; margin-bottom: 14px;
+  }
+  .form-error.show { display: block; }
+
+  /* overlays: success / already submitted */
+  .overlay {
+    display: none; position: fixed; inset: 0; z-index: 50;
+    background: rgba(58, 20, 5, .55); backdrop-filter: blur(5px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .overlay.show { display: flex; }
+  .overlay .panel {
+    background: #fff; border-radius: 24px; max-width: 420px; width: 100%;
+    padding: 34px 26px 28px; text-align: center; animation: pop .35s cubic-bezier(.2,1.4,.4,1);
+    max-height: 90vh; overflow-y: auto;
+  }
+  @keyframes pop { from { transform: scale(.8); opacity: 0; } }
+  .panel .big-ico {
+    width: 74px; height: 74px; border-radius: 50%; margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center; font-size: 36px;
+    background: #E6F7EE; border: 2px solid var(--ok);
+  }
+  .panel.warn .big-ico { background: #FFF3E0; border-color: #E8A020; }
+  .panel h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .panel p { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+  .panel .sum {
+    text-align: left; background: var(--cream); border-radius: 14px;
+    padding: 14px 16px; margin: 16px 0; font-size: 13.5px;
+  }
+  .panel .sum div { display: flex; justify-content: space-between; padding: 3px 0; }
+  .panel .sum b { font-weight: 600; }
+  .panel .close-btn {
+    margin-top: 8px; width: 100%; padding: 13px; border: none; border-radius: 13px;
+    background: linear-gradient(150deg, var(--orange), var(--orange-dark));
+    color: #fff; font-family: inherit; font-size: 15.5px; font-weight: 600; cursor: pointer;
+  }
+  .panel .ghost-btn {
+    margin-top: 10px; background: none; border: none; color: var(--muted);
+    text-decoration: underline; font-family: inherit; font-size: 12.5px; cursor: pointer;
+  }
+
+  footer { text-align: center; color: rgba(255,255,255,.85); font-size: 12px; margin-top: 26px; font-weight: 300; }
+  footer .gv { font-family: 'Great Vibes', cursive; font-size: 17px; color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="badge"><span class="num">10</span> THE JERSEY OF OUR TEAM</div>
+    <h1>สั่งเสื้อกีฬา SMTE</h1>
+    <div class="script">be by your side</div>
+    <p class="sub">กรอกข้อมูล เลือกไซส์ โอนเงิน แล้วแนบสลิปเพื่อยืนยันการสั่งได้เลย</p>
+  </div>
+
+  <form class="card" id="orderForm" novalidate>
+    <div class="card-top"></div>
+
+    <div class="shirt-strip">
+      <img src="assets/shirt.png" alt="เสื้อกีฬา SMTE สีส้ม ด้านหน้าและด้านหลัง หมายเลข 10">
+      <div class="cap">เสื้อกีฬา SMTE — อก: SS 34" · S 36" · M 38" · L 40" · XL 42" · 2XL 44" · 3XL 46"</div>
+    </div>
+
+    <!-- STEP 1 -->
+    <section class="step">
+      <div class="step-head">
+        <div class="no">1</div>
+        <h2>ข้อมูลผู้สั่ง <small>กรอกให้ครบทุกช่องนะ</small></h2>
+      </div>
+      <div class="grid">
+        <div class="field">
+          <label for="prefix">คำนำหน้า <span class="req">*</span></label>
+          <select id="prefix" name="prefix" required>
+            <option value="" disabled selected>เลือก</option>
+            <option>เด็กชาย</option>
+            <option>เด็กหญิง</option>
+            <option>นาย</option>
+            <option>นางสาว</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="firstName">ชื่อ <span class="req">*</span></label>
+          <input id="firstName" name="firstName" type="text" placeholder="ชื่อจริง" required autocomplete="given-name">
+        </div>
+        <div class="field full">
+          <label for="lastName">นามสกุล <span class="req">*</span></label>
+          <input id="lastName" name="lastName" type="text" placeholder="นามสกุล" required autocomplete="family-name">
+        </div>
+        <div class="field">
+          <label for="classroom">ชั้น <span class="req">*</span></label>
+          <input id="classroom" name="classroom" type="text" placeholder="เช่น ม.4/1" required>
+        </div>
+        <div class="field">
+          <label for="classNo">เลขที่ <span class="req">*</span></label>
+          <input id="classNo" name="classNo" type="number" inputmode="numeric" min="1" max="60" placeholder="เช่น 12" required>
+        </div>
+        <div class="field full">
+          <label for="phone">เบอร์โทรศัพท์ <span class="req">*</span></label>
+          <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="0812345678" pattern="0[0-9]{8,9}" maxlength="10" required autocomplete="tel">
+          <div class="hint">ตัวเลข 9–10 หลัก ขึ้นต้นด้วย 0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="step">
+      <div class="step-head">
+        <div class="no">2</div>
+        <h2>เลือกไซส์และจำนวน <small>เทียบรอบอกจากตารางใต้รูปเสื้อได้เลย</small></h2>
+      </div>
+      <div class="field" style="margin-bottom:14px;">
+        <label>ไซส์เสื้อ <span class="req">*</span></label>
+        <div class="sizes" id="sizeGroup">
+          <label class="size-opt"><input type="radio" name="size" value="SS"><span><b>SS</b><small>อก 34"</small></span></label>
+          <label class="size-opt"><input type="radio" name="size" value="S"><span><b>S</b><small>อก 36"</small></span></label>
+          <label class="size-opt"><input type="radio" name="size" value="M"><span><b>M</b><small>อก 38"</small></span></label>
+          <label class="size-opt"><input type="radio" name="size" value="L"><span><b>L</b><small>อก 40"</small></span></label>
+          <label class="size-opt"><input type="radio" name="size" value="XL"><span><b>XL</b><small>อก 42"</small></span></label>
+          <label class="size-opt"><input type="radio" name="size" value="2XL"><span><b>2XL</b><small>อก 44"</small></span></label>
+          <label class="size-opt"><input type="radio" name="size" value="3XL"><span><b>3XL</b><small>อก 46"</small></span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>จำนวน (ตัว) <span class="req">*</span></label>
+        <div class="qty-row">
+          <button type="button" class="qty-btn" id="qtyMinus" aria-label="ลดจำนวน">−</button>
+          <div class="qty-val" id="qtyVal">1</div>
+          <button type="button" class="qty-btn" id="qtyPlus" aria-label="เพิ่มจำนวน">+</button>
+          <div class="total-pill" id="totalPill"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="step">
+      <div class="step-head">
+        <div class="no">3</div>
+        <h2>ชำระเงิน <small>สแกน QR ด้านล่างผ่านแอปธนาคารใดก็ได้</small></h2>
+      </div>
+      <div class="pay-box">
+        <img class="qr" src="assets/qr-promptpay.jpg" alt="QR PromptPay สำหรับโอนค่าเสื้อ">
+        <div class="acc-name">ด.ช. ต้นธาร ปัญโญศักดิ์</div>
+        <div class="acc-no">PromptPay · xxx-x-x4106-x (MAKE by KBank)</div>
+        <div class="pay-note">💡 โอนเสร็จแล้วเก็บสลิปไว้ อัปโหลดในขั้นตอนถัดไป</div>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="step">
+      <div class="step-head">
+        <div class="no">4</div>
+        <h2>แนบสลิปโอนเงิน <small>รองรับไฟล์รูปภาพ ขนาดไม่เกิน 10 MB</small></h2>
+      </div>
+      <label class="drop" id="dropZone">
+        <input type="file" id="slipInput" accept="image/*">
+        <div class="ico">🧾</div>
+        <div class="t1">แตะเพื่อเลือกสลิป หรือลากไฟล์มาวางตรงนี้</div>
+        <div class="t2">JPG / PNG / HEIC · ระบบจะย่อรูปให้อัตโนมัติ</div>
+      </label>
+      <div class="slip-preview" id="slipPreview">
+        <img id="slipImg" alt="ตัวอย่างสลิปที่แนบ">
+        <div class="ok-line">✓ แนบสลิปเรียบร้อย</div>
+        <button type="button" id="slipRemove">เปลี่ยนรูปสลิป</button>
+      </div>
+    </section>
+
+    <div class="submit-zone">
+      <div class="form-error" id="formError"></div>
+      <label class="agree">
+        <input type="checkbox" id="agree" required>
+        <span>ฉันตรวจสอบข้อมูลและยอดโอนถูกต้องแล้ว และเข้าใจว่าการสั่งจะสมบูรณ์เมื่อแนบสลิปยืนยันการโอนเงิน</span>
+      </label>
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <span class="spinner"></span>
+        <span id="submitLabel">🏆 ยืนยันการสั่งเสื้อ</span>
+      </button>
+    </div>
+  </form>
+
+  <footer>ทีมเสื้อกีฬา SMTE · <span class="gv">be by your side</span></footer>
+</div>
+
+<!-- success overlay -->
+<div class="overlay" id="successOverlay">
+  <div class="panel">
+    <div class="big-ico">🎉</div>
+    <h3>สั่งเสื้อสำเร็จ!</h3>
+    <p>ระบบบันทึกข้อมูลและสลิปของคุณเรียบร้อยแล้ว<br>ขอบคุณที่ร่วมเป็นทีมเดียวกันนะ 🧡</p>
+    <div class="sum" id="successSum"></div>
+    <p style="font-size:12px;">หากข้อมูลผิดพลาด ติดต่อผู้ประสานงานห้องของคุณได้เลย</p>
+    <button class="close-btn" onclick="document.getElementById('successOverlay').classList.remove('show')">ปิดหน้าต่างนี้</button>
+  </div>
+</div>
+
+<!-- already submitted overlay -->
+<div class="overlay" id="dupOverlay">
+  <div class="panel warn">
+    <div class="big-ico">✋</div>
+    <h3>คุณส่งคำสั่งซื้อไปแล้ว</h3>
+    <p id="dupDetail">เครื่องนี้เคยส่งคำสั่งซื้อสำเร็จแล้ว เพื่อป้องกันการสั่งซ้ำ ระบบจึงปิดฟอร์มไว้</p>
+    <button class="close-btn" onclick="document.getElementById('dupOverlay').classList.remove('show')">ดูฟอร์ม (อ่านอย่างเดียว)</button>
+    <button class="ghost-btn" id="orderAgainBtn">ต้องการสั่งให้อีกคน / สั่งเพิ่ม กดที่นี่</button>
+  </div>
+</div>
+
+<script>
+/* ================= CONFIG =================
+   1) วาง URL ของ Google Apps Script Web App (ลงท้าย /exec) ตรง SCRIPT_URL
+   2) ใส่ราคาเสื้อต่อตัว (บาท) ที่ PRICE_PER_SHIRT — ถ้ายังไม่กำหนดให้ใส่ 0 ระบบจะไม่โชว์ยอดรวม
+============================================ */
+const SCRIPT_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
+const PRICE_PER_SHIRT = 0;
+const MAX_QTY = 10;
+const LS_KEY = 'smte-shirt-order-v1';
+
+const $ = (id) => document.getElementById(id);
+let qty = 1;
+let slipData = null;   // { base64, mimeType, name }
+let submitting = false;
+
+/* ---------- quantity + total ---------- */
+function renderQty() {
+  $('qtyVal').textContent = qty;
+  const pill = $('totalPill');
+  if (PRICE_PER_SHIRT > 0) {
+    pill.textContent = 'รวม ' + (qty * PRICE_PER_SHIRT).toLocaleString('th-TH') + ' บาท';
+    pill.classList.add('show');
+  }
+}
+$('qtyMinus').addEventListener('click', () => { if (qty > 1) { qty--; renderQty(); } });
+$('qtyPlus').addEventListener('click', () => { if (qty < MAX_QTY) { qty++; renderQty(); } });
+renderQty();
+
+/* ---------- slip upload (compress via canvas) ---------- */
+const dropZone = $('dropZone'), slipInput = $('slipInput');
+
+function readSlip(file) {
+  if (!file || !file.type.startsWith('image/')) { showError('กรุณาแนบไฟล์รูปภาพสลิปเท่านั้น'); return; }
+  if (file.size > 10 * 1024 * 1024) { showError('ไฟล์สลิปใหญ่เกิน 10 MB กรุณาเลือกรูปใหม่'); return; }
+  const img = new Image();
+  const url = URL.createObjectURL(file);
+  img.onload = () => {
+    const MAX = 1280;
+    const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(img.width * scale);
+    canvas.height = Math.round(img.height * scale);
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+    slipData = { base64: dataUrl.split(',')[1], mimeType: 'image/jpeg', name: file.name };
+    $('slipImg').src = dataUrl;
+    $('slipPreview').style.display = 'block';
+    dropZone.style.display = 'none';
+    URL.revokeObjectURL(url);
+    hideError();
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); showError('อ่านไฟล์รูปไม่สำเร็จ กรุณาลองใหม่'); };
+  img.src = url;
+}
+slipInput.addEventListener('change', (e) => readSlip(e.target.files[0]));
+['dragover', 'dragenter'].forEach(ev => dropZone.addEventListener(ev, (e) => { e.preventDefault(); dropZone.classList.add('drag'); }));
+['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, (e) => { e.preventDefault(); dropZone.classList.remove('drag'); }));
+dropZone.addEventListener('drop', (e) => readSlip(e.dataTransfer.files[0]));
+$('slipRemove').addEventListener('click', () => {
+  slipData = null; slipInput.value = '';
+  $('slipPreview').style.display = 'none';
+  dropZone.style.display = 'block';
+});
+
+/* ---------- errors ---------- */
+function showError(msg) {
+  const el = $('formError');
+  el.textContent = '⚠️ ' + msg;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function hideError() { $('formError').classList.remove('show'); }
+
+/* ---------- duplicate guard (this device) ---------- */
+function getSaved() { try { return JSON.parse(localStorage.getItem(LS_KEY)); } catch { return null; } }
+function lockIfSubmitted() {
+  const saved = getSaved();
+  if (!saved) return;
+  $('dupDetail').innerHTML =
+    'เครื่องนี้ส่งคำสั่งซื้อของ <b>' + escapeHtml(saved.name) + '</b> (' + escapeHtml(saved.classroom) +
+    ' เลขที่ ' + escapeHtml(String(saved.classNo)) + ') สำเร็จแล้วเมื่อ ' + escapeHtml(saved.at) +
+    '<br>เพื่อป้องกันการสั่งซ้ำ ระบบจึงปิดฟอร์มไว้';
+  $('dupOverlay').classList.add('show');
+  $('submitBtn').disabled = true;
+  $('submitLabel').textContent = '✓ ส่งคำสั่งซื้อแล้ว';
+}
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+$('orderAgainBtn').addEventListener('click', () => {
+  if (confirm('ยืนยันว่าต้องการเปิดฟอร์มเพื่อสั่งเพิ่มอีก 1 คำสั่งซื้อ?')) {
+    localStorage.removeItem(LS_KEY);
+    location.reload();
+  }
+});
+lockIfSubmitted();
+
+/* ---------- submit ---------- */
+$('orderForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (submitting) return;                       // กันกดรัว
+  if ($('submitBtn').disabled) return;
+  hideError();
+
+  const form = e.target;
+  if (!form.checkValidity()) { form.reportValidity(); return; }
+  const size = form.querySelector('input[name="size"]:checked');
+  if (!size) { showError('กรุณาเลือกไซส์เสื้อ'); return; }
+  if (!slipData) { showError('กรุณาแนบสลิปโอนเงินก่อนยืนยันการสั่ง'); return; }
+  if (getSaved()) { lockIfSubmitted(); return; } // กันซ้ำจากเครื่องเดิม
+  if (SCRIPT_URL.indexOf('YOUR_APPS_SCRIPT') === 0) {
+    showError('ผู้ดูแลยังไม่ได้ตั้งค่า SCRIPT_URL ในไฟล์ index.html'); return;
+  }
+
+  const payload = {
+    submissionId: 'smte-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10),
+    prefix: $('prefix').value,
+    firstName: $('firstName').value.trim(),
+    lastName: $('lastName').value.trim(),
+    classroom: $('classroom').value.trim(),
+    classNo: $('classNo').value.trim(),
+    phone: $('phone').value.trim(),
+    size: size.value,
+    quantity: qty,
+    total: PRICE_PER_SHIRT > 0 ? qty * PRICE_PER_SHIRT : '',
+    slipBase64: slipData.base64,
+    slipMimeType: slipData.mimeType,
+    slipName: slipData.name
+  };
+
+  submitting = true;
+  const btn = $('submitBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  $('submitLabel').textContent = 'กำลังส่งข้อมูล...';
+
+  try {
+    const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    const out = await res.json();
+
+    if (out.status === 'success' || out.status === 'duplicate-id') {
+      localStorage.setItem(LS_KEY, JSON.stringify({
+        name: payload.prefix + payload.firstName + ' ' + payload.lastName,
+        classroom: payload.classroom, classNo: payload.classNo,
+        at: new Date().toLocaleString('th-TH')
+      }));
+      $('successSum').innerHTML =
+        '<div><span>ชื่อ</span><b>' + escapeHtml(payload.prefix + payload.firstName + ' ' + payload.lastName) + '</b></div>' +
+        '<div><span>ชั้น / เลขที่</span><b>' + escapeHtml(payload.classroom) + ' / ' + escapeHtml(payload.classNo) + '</b></div>' +
+        '<div><span>ไซส์ × จำนวน</span><b>' + escapeHtml(payload.size) + ' × ' + payload.quantity + ' ตัว</b></div>' +
+        (payload.total ? '<div><span>ยอดโอน</span><b>' + payload.total.toLocaleString('th-TH') + ' บาท</b></div>' : '');
+      $('successOverlay').classList.add('show');
+      $('submitLabel').textContent = '✓ ส่งคำสั่งซื้อแล้ว';
+      btn.classList.remove('loading');
+      return; // ปุ่มถูกล็อกถาวรจนกว่าจะกด "สั่งเพิ่ม"
+    }
+    if (out.status === 'duplicate') {
+      showError(out.message || 'มีคำสั่งซื้อของชั้น/เลขที่นี้อยู่แล้ว หากต้องการแก้ไขให้ติดต่อผู้ประสานงาน');
+    } else {
+      showError(out.message || 'ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+    }
+  } catch (err) {
+    showError('เชื่อมต่อระบบไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่');
+  }
+  submitting = false;
+  btn.disabled = false;
+  btn.classList.remove('loading');
+  $('submitLabel').textContent = '🏆 ยืนยันการสั่งเสื้อ';
+});
+</script>
+</body>
+</html>
