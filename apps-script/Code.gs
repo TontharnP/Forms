@@ -16,8 +16,8 @@ var CONFIG = {
 
 var HEADERS = [
   'เวลาที่ส่ง', 'คำนำหน้า', 'ชื่อ', 'นามสกุล', 'ชั้น', 'เลขที่',
-  'เบอร์โทรศัพท์', 'ไซส์', 'จำนวน (ตัว)', 'ยอดโอน (บาท)',
-  'ลิงก์สลิป', 'Submission ID'
+  'เบอร์โทรศัพท์', 'ชื่อบนเสื้อ', 'เลขบนเสื้อ', 'ไซส์', 'จำนวน (ตัว)',
+  'ยอดโอน (บาท)', 'ลิงก์สลิป', 'Submission ID'
 ];
 
 function doPost(e) {
@@ -48,7 +48,7 @@ function doPost(e) {
     // --- กันส่งซ้ำ ---
     // 1) submissionId เดิม (เช่น กดซ้ำ/เน็ตหลุดแล้ว retry) -> ตอบสำเร็จโดยไม่บันทึกเพิ่ม
     for (var r = 1; r < rows.length; r++) {
-      if (String(rows[r][11]) === String(data.submissionId)) {
+      if (String(rows[r][13]) === String(data.submissionId)) {
         return jsonOut({ status: 'duplicate-id', message: 'บันทึกคำสั่งซื้อนี้ไว้แล้ว' });
       }
     }
@@ -93,6 +93,8 @@ function doPost(e) {
       data.classroom,
       "'" + data.classNo,
       "'" + data.phone,   // กันชีทตัดเลข 0 นำหน้า
+      data.desiredName || 'SMTE',
+      "'" + (data.desiredNumber || '10'),  // เก็บเป็นข้อความ กันเลข 0 นำหน้าหาย
       data.size,
       Number(data.quantity),
       data.total === '' ? '' : Number(data.total),
